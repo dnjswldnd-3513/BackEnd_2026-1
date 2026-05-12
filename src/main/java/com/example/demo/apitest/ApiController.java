@@ -18,6 +18,9 @@ public class ApiController {
     @GetMapping("/api/{index}")
     @ResponseBody
     public ResponseEntity<?> getMethod(@PathVariable Long index){
+        if (maps.get(index) == null){
+            return ResponseEntity.notFound().build(); // notFound,notContent의 따라 에러코드도 달라짐
+        }
         return ResponseEntity.ok(maps.get(index));
     }
 
