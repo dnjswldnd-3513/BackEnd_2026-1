@@ -9,11 +9,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @Controller
 public class IntroduceController {
 
-    
+
 
     @GetMapping("/introduce")
     @ResponseBody
     public String getNameIntroduce(@RequestParam(required = false) String name) {
+        if (name == null){
+            return "안녕하세요. 저는 원지웅입니다.";
+        }
         return name;
     }
 
