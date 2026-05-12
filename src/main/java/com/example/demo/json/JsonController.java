@@ -11,6 +11,6 @@ public class JsonController {
     @GetMapping("/json")
     @ResponseBody
     public Entity get(){
-        return  new Entity(26,"허준기");
+        return new Entity(26L,"허준기");
     }
 }

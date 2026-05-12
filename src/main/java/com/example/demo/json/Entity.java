@@ -3,9 +3,9 @@ package com.example.demo.json;
 public class Entity {
 
     private String name;
-    private Integer age;
+    private Long age;
 
-    public Entity(Integer age, String name) {
+    public Entity(Long age, String name) {
         this.name = name;
         this.age = age;
     }
