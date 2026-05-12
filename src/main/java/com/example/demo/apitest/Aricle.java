@@ -11,11 +11,19 @@ public class Aricle {
         this.description = description;
     }
 
+    public Aricle(){
+        this.id = nextId++;
+    }
+
     public Long getId() {
         return id;
     }
 
     public String getDescription() {
         return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }
