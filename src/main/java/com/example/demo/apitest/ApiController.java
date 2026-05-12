@@ -42,4 +42,15 @@ public class ApiController {
         maps.put(id, updates);
         return ResponseEntity.ok(updates);
     }
+
+
+    @DeleteMapping("/api/{id}")
+    @ResponseBody
+    public ResponseEntity<?> deleteMethod(@PathVariable Long id,@RequestBody Aricle aricle){
+        if (maps.get(id) == null){
+            return ResponseEntity.notFound().build();
+        }
+        maps.remove(id) ;
+        return ResponseEntity.noContent().build();
+    }
 }
