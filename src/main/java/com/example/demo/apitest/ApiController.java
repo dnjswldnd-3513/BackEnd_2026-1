@@ -30,4 +30,16 @@ public class ApiController {
         maps.put(aricle.getId(),aricle);
         return ResponseEntity.status(HttpStatus.CREATED).body(aricle);
     }
+
+    @PutMapping("/api/{id}")
+    @ResponseBody
+    public ResponseEntity<?> putMethod(@PathVariable Long id, @RequestBody Aricle aricle) {
+        if (maps.get(id) == null) {
+            return ResponseEntity.notFound().build();
+        }
+        Aricle updates = maps.get(id);
+        updates.setDescription(aricle.getDescription());
+        maps.put(id, updates);
+        return ResponseEntity.ok(updates);
+    }
 }
