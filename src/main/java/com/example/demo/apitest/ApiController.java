@@ -11,9 +11,9 @@ import java.util.Map;
 @RestController
 public class ApiController {
 
-    Map<Long,Aricle> maps = new HashMap<>();
+    Map<Long, Article> maps = new HashMap<>();
 
-    @GetMapping("/api/{index}")
+    @GetMapping("/article/{index}")
     public ResponseEntity<?> getMethod(@PathVariable Long index){
         if (maps.get(index) == null){
             return ResponseEntity.notFound().build(); // notFound,notContent의 따라 에러코드도 달라짐
@@ -21,25 +21,25 @@ public class ApiController {
         return ResponseEntity.ok(maps.get(index));
     }
 
-    @PostMapping("/api")
-    public ResponseEntity<?> postMethod(@RequestBody Aricle aricle){
+    @PostMapping("/article")
+    public ResponseEntity<?> postMethod(@RequestBody Article aricle){
         maps.put(aricle.getId(),aricle);
         return ResponseEntity.status(HttpStatus.CREATED).body(aricle);
     }
 
-    @PutMapping("/api/{id}")
-    public ResponseEntity<?> putMethod(@PathVariable Long id, @RequestBody Aricle aricle) {
+    @PutMapping("/article/{id}")
+    public ResponseEntity<?> putMethod(@PathVariable Long id, @RequestBody Article aricle) {
         if (maps.get(id) == null) {
             return ResponseEntity.notFound().build();
         }
-        Aricle updates = maps.get(id);
+        Article updates = maps.get(id);
         updates.setDescription(aricle.getDescription());
         maps.put(id, updates);
         return ResponseEntity.ok(updates);
     }
 
 
-    @DeleteMapping("/api/{id}")
+    @DeleteMapping("/article/{id}")
     public ResponseEntity<?> deleteMethod(@PathVariable Long id){
         if (maps.get(id) == null){
             return ResponseEntity.notFound().build();
