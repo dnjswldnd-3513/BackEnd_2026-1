@@ -1,17 +1,17 @@
 package com.example.demo.apitest;
 
-public class Aricle {
+public class Article {
     private static Long nextId = 1L;
 
     private Long id;
     private String description;
 
-    public Aricle(String description) {
+    public Article(String description) {
         this.id = nextId++;
         this.description = description;
     }
 
-    public Aricle(){
+    public Article(){
         this.id = nextId++;
     }
 
