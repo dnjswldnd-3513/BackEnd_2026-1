@@ -3,6 +3,7 @@ package com.example.demo.repository;
 import com.example.demo.entity.Article;
 import com.example.demo.entity.Board;
 import com.example.demo.entity.Member;
+import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -10,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+@Repository
 public class ArticleRepository {
 
     private Map<Long, Article> articles = new HashMap<>();
