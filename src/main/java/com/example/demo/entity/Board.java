@@ -10,7 +10,6 @@ public class Board {
     }
 
     public Long getId() {
-        
         return id;
     }
 
