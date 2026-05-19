@@ -1,11 +1,11 @@
-package com.example.demo.json;
+package com.example.demo.entity;
 
-public class Entity {
+public class Json {
 
     private String name;
     private Long age;
 
-    public Entity(Long age, String name) {
+    public Json(Long age, String name) {
         this.name = name;
         this.age = age;
     }

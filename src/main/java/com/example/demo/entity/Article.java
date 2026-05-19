@@ -1,4 +1,4 @@
-package com.example.demo.apitest;
+package com.example.demo.entity;
 
 public class Article {
     private static Long nextId = 1L;

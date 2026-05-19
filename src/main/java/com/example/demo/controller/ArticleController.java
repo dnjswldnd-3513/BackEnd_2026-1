@@ -1,6 +1,7 @@
-package com.example.demo.apitest;
+package com.example.demo.controller;
 
 
+import com.example.demo.entity.Article;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -9,7 +10,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @RestController
-public class ApiController {
+public class ArticleController {
 
     Map<Long, Article> maps = new HashMap<>();
 
