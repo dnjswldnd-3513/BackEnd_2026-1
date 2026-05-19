@@ -16,17 +16,21 @@ public class ArticleController {
 
     private ArticleService articleService;
 
-    @GetMapping("/article")
+    public ArticleController(ArticleService articleService) {
+        this.articleService = articleService;
+    }
+
+    @GetMapping("/articles")
     public ResponseEntity<List<Map<String, Object>>> getArticles(){
         return ResponseEntity.ok(articleService.getArticles());
     }
 
-    @GetMapping("/article/{id}")
+    @GetMapping("/articles/{id}")
     public ResponseEntity<Map<String, Object>> getArticle(@PathVariable Long id){
         return ResponseEntity.ok(articleService.getArticle(id));
     }
 
-    @PostMapping("/article")
+    @PostMapping("/articles")
     public ResponseEntity<Article> createArticle(@RequestBody Map<String,Object> body){
         Long memberId = Long.valueOf(body.get("memberId").toString());
         Long boardId = Long.valueOf(body.get("boardId").toString());
@@ -36,14 +40,14 @@ public class ArticleController {
                 .body(articleService.createArticle(memberId, boardId, title, content));
     }
 
-    @PutMapping("/article/{id}")
+    @PutMapping("/articles/{id}")
     public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody Map<String,Object> body) {
         String title = body.get("title").toString();
         String content = body.get("content").toString();
         return ResponseEntity.ok(articleService.updateArticle(id,title,content));
     }
 
-    @DeleteMapping("/article/{id}")
+    @DeleteMapping("/articles/{id}")
     public ResponseEntity<?> deleteArticle(@PathVariable Long id){
         articleService.deleteArticle(id);
         return ResponseEntity.noContent().build();
