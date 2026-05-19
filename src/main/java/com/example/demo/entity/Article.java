@@ -1,29 +1,69 @@
 package com.example.demo.entity;
 
+import java.time.LocalDateTime;
+
 public class Article {
-    private static Long nextId = 1L;
 
     private Long id;
-    private String description;
+    private Long memberID;
+    private Long boardId;
+    private String title;
+    private String content;
+    private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 
-    public Article(String description) {
-        this.id = nextId++;
-        this.description = description;
+    public Article(Long memberID, Long boardId, String title, String content) {
+        this.memberID = memberID;
+        this.boardId = boardId;
+        this.title = title;
+        this.content = content;
     }
 
-    public Article(){
-        this.id = nextId++;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public void setUpdatedAt(LocalDateTime updatedAt) {
+        this.updatedAt = updatedAt;
     }
 
     public Long getId() {
         return id;
     }
 
-    public String getDescription() {
-        return description;
+    public Long getMemberID() {
+        return memberID;
     }
 
-    public void setDescription(String description) {
-        this.description = description;
+    public Long getBoardId() {
+        return boardId;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
     }
 }
