@@ -23,6 +23,11 @@ public class ArticleRepository {
         return  new ArrayList<>(articles.values());
     }
 
+    public ArticleRepository() {
+        boards.put(1L, new Board(1L, "자유게시판"));
+        members.put(1L, new Member(1L, "테스트유저", "test@test.com", "pw"));
+    }
+
     public Article findById(Long id){
         Article article = articles.get(id);
         if (article == null) throw new IllegalArgumentException("존재하지 않는 article id: " + id);
@@ -42,7 +47,7 @@ public class ArticleRepository {
     }
 
     public Article save(Article article){
-        article.setId(articleNextId);
+        article.setId(articleNextId++);
         article.setCreatedAt(LocalDateTime.now());
         article.setUpdatedAt(LocalDateTime.now());
         articles.put(article.getId(),article);
