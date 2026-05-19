@@ -1,9 +1,11 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Article;
+import com.example.demo.entity.Board;
 import com.example.demo.entity.Member;
 import com.example.demo.repository.ArticleRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -51,6 +53,10 @@ public class ArticleService {
         articleRepository.delete(id);
     }
 
-
+    public void setPostsModel(Model model){
+        Board board = articleRepository.findBoardById(1L);
+        model.addAttribute("boardName",board.getName());
+        model.addAttribute("articles",getArticles());
+    }
 
 }
