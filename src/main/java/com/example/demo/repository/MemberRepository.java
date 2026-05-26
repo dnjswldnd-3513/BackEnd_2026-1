@@ -26,7 +26,7 @@ public class MemberRepository {
         return member;
     }
 
-    public Member findbyId(Long id){
+    public Member findById(Long id){
         Member member = members.get(id);
         if(member == null){
             throw new IllegalArgumentException("존재하지 않는 member id " + id);
