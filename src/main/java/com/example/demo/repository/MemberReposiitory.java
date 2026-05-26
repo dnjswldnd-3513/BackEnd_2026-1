@@ -41,5 +41,5 @@ public class MemberReposiitory {
     public void deleteById(Long id) {
         members.remove(id);
     }
-    
+
 }
