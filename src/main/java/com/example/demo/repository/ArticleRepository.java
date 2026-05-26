@@ -15,21 +15,11 @@ import java.util.Map;
 public class ArticleRepository {
 
     private Map<Long, Article> articles = new HashMap<>();
-    private Map<Long, Member> members = new HashMap<>();
-    private Map<Long, Board> boards = new HashMap<>();
-    private Long articleNextId = 0L;
+    private Long nextId = 0L;
 
     public List<Article> findAll(){
         return  new ArrayList<>(articles.values());
     }
-
-
-    ///////////////
-    public ArticleRepository() {
-        boards.put(1L, new Board(1L, "자유게시판"));
-        members.put(1L, new Member(1L, "테스트유저", "test@test.com", "pw"));
-    }
-    //////////////
 
     public Article findById(Long id){
         Article article = articles.get(id);
@@ -37,20 +27,8 @@ public class ArticleRepository {
         return article;
     }
 
-    public Member findMemberById(Long id){
-        Member member = members.get(id);
-        if (member == null) throw new IllegalArgumentException("존재하지 않는 member id: " + id);
-        return member;
-    }
-
-    public Board findBoardById(Long id){
-        Board board = boards.get(id);
-        if (board == null) throw new IllegalArgumentException("board id: " + id);
-        return board;
-    }
-
     public Article save(Article article){
-        article.setId(articleNextId++);
+        article.setId(++nextId);
         articles.put(article.getId(),article);
         return article;
     }
