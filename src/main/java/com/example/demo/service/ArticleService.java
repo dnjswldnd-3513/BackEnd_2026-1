@@ -64,4 +64,11 @@ public class ArticleService {
         model.addAttribute("articles",getArticles());
     }
 
+    public List<Map<String,Object>> getArticlesByBoard(Long boardId) {
+        return articleRepository.findByBoardId(boardId)
+                .stream()
+                .map(this::toMap)
+                .collect(Collectors.toList());
+    }
+
 }

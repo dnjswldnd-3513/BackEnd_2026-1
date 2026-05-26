@@ -44,4 +44,10 @@ public class ArticleRepository {
         articles.remove(id);
     }
 
+    public List<Article> findByBoardId(Long boardId) {
+        return articles.values().stream()
+                .filter(a -> a.getBoardId().equals(boardId))
+                .toList();
+    }
+
 }

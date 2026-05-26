@@ -52,4 +52,9 @@ public class ArticleController {
         articleService.deleteArticle(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/articles")
+    public ResponseEntity<List<Map<String,Object>>> getArticles(@RequestParam Long boardId) {
+        return ResponseEntity.ok(articleService.getArticlesByBoard(boardId));
+    }
 }
