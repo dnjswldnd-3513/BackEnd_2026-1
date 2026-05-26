@@ -51,17 +51,13 @@ public class ArticleRepository {
 
     public Article save(Article article){
         article.setId(articleNextId++);
-        article.setCreatedAt(LocalDateTime.now());
-        article.setUpdatedAt(LocalDateTime.now());
         articles.put(article.getId(),article);
         return article;
     }
 
     public Article update(Long id,String title,String content){
         Article article = findById(id);
-        article.setTitle(title);
-        article.setContent(content);
-        article.setUpdatedAt(LocalDateTime.now());
+        article.update(title,content);
         return article;
     }
 

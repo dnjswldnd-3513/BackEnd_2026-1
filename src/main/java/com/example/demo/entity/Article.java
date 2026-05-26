@@ -5,38 +5,29 @@ import java.time.LocalDateTime;
 public class Article {
 
     private Long id;
-    private Long memberID;
+    private Long memeberId;
     private Long boardId;
     private String title;
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Article(Long memberID, Long boardId, String title, String content) {
-        this.memberID = memberID;
+    public Article(Long memeberId, Long boardId, String title, String content) {
+        this.memeberId = memeberId;
         this.boardId = boardId;
         this.title = title;
         this.content = content;
+        this.createdAt = LocalDateTime.now();
     }
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    public void setContent(String content) {
+    public void update(String title,String content){
         this.content = content;
-    }
-
-    public void setTitle(String title) {
         this.title = title;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public void setUpdatedAt(LocalDateTime updatedAt) {
-        this.updatedAt = updatedAt;
+        this.updatedAt = LocalDateTime.now();
     }
 
     public Long getId() {
@@ -44,7 +35,7 @@ public class Article {
     }
 
     public Long getMemberID() {
-        return memberID;
+        return memeberId;
     }
 
     public Long getBoardId() {
