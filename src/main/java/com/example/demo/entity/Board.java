@@ -4,8 +4,15 @@ public class Board {
     private Long id;
     private String name;
 
-    public Board(Long id, String name) {
+    public Board(String name) {
+        this.name = name;
+    }
+
+    public void crateId(Long id){
         this.id = id;
+    }
+
+    public void update(String name){
         this.name = name;
     }
 
