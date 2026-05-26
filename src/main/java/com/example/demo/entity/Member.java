@@ -7,8 +7,17 @@ public class Member {
     private String email;
     private String password;
 
-    public Member(Long id, String name, String email, String password) {
+    public Member(String name, String email, String password) {
+        this.name = name;
+        this.email = email;
+        this.password = password;
+    }
+
+    public void createId(Long id){
         this.id = id;
+    }
+
+    public void update(String name,String email,String password){
         this.name = name;
         this.email = email;
         this.password = password;
