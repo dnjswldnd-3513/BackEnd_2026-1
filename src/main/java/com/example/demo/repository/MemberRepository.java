@@ -9,13 +9,13 @@ import java.util.List;
 import java.util.Map;
 
 @Repository
-public class MemberReposiitory {
+public class MemberRepository {
 
     private final Map<Long, Member> members = new HashMap<>();
     private Long nextId = 0L;
 
 
-    public MemberReposiitory() {
+    public MemberRepository() {
         //testcode
         save(new Member("테스트유저이름","testemail","1234"));
     }
