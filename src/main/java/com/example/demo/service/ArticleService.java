@@ -4,6 +4,8 @@ import com.example.demo.entity.Article;
 import com.example.demo.entity.Board;
 import com.example.demo.entity.Member;
 import com.example.demo.repository.ArticleRepository;
+import com.example.demo.repository.BoardRepository;
+import com.example.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -16,20 +18,23 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleService {
 
-    private ArticleRepository articleRepository;
+    private final ArticleRepository articleRepository;
+    private final MemberRepository memberRepository;
+    private final BoardRepository boardRepository;
 
-    public ArticleService(ArticleRepository articleRepository) {
+    public ArticleService(ArticleRepository articleRepository, MemberRepository memberRepository, BoardRepository boardRepository) {
         this.articleRepository = articleRepository;
+        this.memberRepository = memberRepository;
+        this.boardRepository = boardRepository;
     }
 
     public List<Map<String,Object>> getArticles(){
-        List<Map<String,Object>> result = new ArrayList<>();
         return articleRepository.findAll().stream().map(this::toMap).collect(Collectors.toList());
     }
 
     private Map<String,Object> toMap(Article article){
         Map<String,Object> map = new HashMap<>();
-        Member member = articleRepository.findMemberById(article.getMemberID());
+        Member member = memberRepository.findById(article.getMemberID());
         map.put("title",article.getTitle());
         map.put("author",member.getName());
         map.put("date",article.getCreatedAt());
@@ -54,7 +59,7 @@ public class ArticleService {
     }
 
     public void setPostsModel(Model model){
-        Board board = articleRepository.findBoardById(1L);
+        Board board = boardRepository.findById(1L);
         model.addAttribute("boardName",board.getName());
         model.addAttribute("articles",getArticles());
     }
