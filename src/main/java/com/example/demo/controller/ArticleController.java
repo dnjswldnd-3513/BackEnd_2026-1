@@ -7,9 +7,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 public class ArticleController {
@@ -34,32 +33,24 @@ public class ArticleController {
         return ResponseEntity.ok(articleService.getArticle(id));
     }
 
+    private Long toLong(Object obj) {
+        return obj != null ? Long.valueOf(obj.toString()) : null;
+    }
+
     @PostMapping("/articles")
     public ResponseEntity<Article> createArticle(@RequestBody Map<String,Object> body){
-        Object memberIdObj = body.get("memberId");
-        Object boardIdObj = body.get("boardId");
-
-        Long memberId = memberIdObj != null ? Long.valueOf(memberIdObj.toString()) : null;
-        Long boardId = boardIdObj != null ? Long.valueOf(boardIdObj.toString()) : null;
-
         String title = (String) body.get("title");
         String content = (String) body.get("content");
 
         return ResponseEntity.status(HttpStatus.CREATED)
-                .body(articleService.createArticle(memberId, boardId, title, content));
+                .body(articleService.createArticle(toLong(body.get("memberId")), toLong(body.get("boardId")), title, content));
     }
 
     @PutMapping("/articles/{id}")
     public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody Map<String, Object> body) {
-        Object memberIdObj = body.get("memberId");
-        Object boardIdObj = body.get("boardId");
-
-        Long memberId = memberIdObj != null ? Long.valueOf(memberIdObj.toString()) : null;
-        Long boardId = boardIdObj != null ? Long.valueOf(boardIdObj.toString()) : null;
-
         String title = (String) body.get("title");
         String content = (String) body.get("content");
-        return ResponseEntity.ok(articleService.updateArticle(id, memberId, boardId, title, content));
+        return ResponseEntity.ok(articleService.updateArticle(id, toLong(body.get("memberId")), toLong(body.get("boardId")), title, content));
     }
 
     @DeleteMapping("/articles/{id}")
