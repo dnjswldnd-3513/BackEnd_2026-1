@@ -5,15 +5,15 @@ import java.time.LocalDateTime;
 public class Article {
 
     private Long id;
-    private Long memeberId;
+    private Long memberId;
     private Long boardId;
     private String title;
     private String content;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
 
-    public Article(Long memeberId, Long boardId, String title, String content) {
-        this.memeberId = memeberId;
+    public Article(Long memberId, Long boardId, String title, String content) {
+        this.memberId = memberId;
         this.boardId = boardId;
         this.title = title;
         this.content = content;
@@ -35,7 +35,7 @@ public class Article {
     }
 
     public Long getMemberID() {
-        return memeberId;
+        return memberId;
     }
 
     public Long getBoardId() {
