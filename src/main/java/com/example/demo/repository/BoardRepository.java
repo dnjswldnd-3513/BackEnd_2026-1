@@ -40,4 +40,8 @@ public class BoardRepository {
     public void deleteById(Long id) {
         boards.remove(id);
     }
+
+    public boolean checkById(Long id){
+        return boards.containsKey(id);
+    }
 }

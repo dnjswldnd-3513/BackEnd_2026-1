@@ -53,4 +53,8 @@ public class MemberRepository {
                 .anyMatch(f -> f.getEmail().equals(email) && !f.getId().equals(id));
     }
 
+    public boolean checkById(Long id){
+        return members.containsKey(id);
+    }
+
 }
