@@ -3,6 +3,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Board;
 import com.example.demo.exception.BadRequestException;
+import com.example.demo.repository.ArticleRepository;
 import com.example.demo.repository.BoardRepository;
 import org.springframework.stereotype.Service;
 
@@ -11,9 +12,11 @@ import java.util.List;
 @Service
 public class BoardService {
     private final BoardRepository boardRepository;
+    private final ArticleRepository articleRepository;
 
-    public BoardService(BoardRepository boardRepository) {
+    public BoardService(BoardRepository boardRepository, ArticleRepository articleRepository) {
         this.boardRepository = boardRepository;
+        this.articleRepository = articleRepository;
     }
 
     public List<Board> getBoards() {
@@ -36,6 +39,8 @@ public class BoardService {
     }
 
     public void deleteBoard(Long id) {
+        boardRepository.findById(id);
+        if (articleRepository.checkByBoardId(id)) throw new BadRequestException("작성된 게시물이 있어 게시판을 삭제할수 없습니다.");
         boardRepository.deleteById(id);
     }
 }
