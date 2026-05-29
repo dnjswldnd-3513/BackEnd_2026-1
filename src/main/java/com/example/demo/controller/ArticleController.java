@@ -3,6 +3,7 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Article;
 import com.example.demo.service.ArticleService;
+import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -21,7 +22,11 @@ public class ArticleController {
     }
 
     @GetMapping("/articles")
-    public ResponseEntity<List<Map<String, Object>>> getArticles(){
+    public ResponseEntity<List<Map<String, Object>>> getArticles(
+            @RequestParam(required = false) Long boardId) {
+        if (boardId != null) {
+            return ResponseEntity.ok(articleService.getArticlesByBoard(boardId));
+        }
         return ResponseEntity.ok(articleService.getArticles());
     }
 
@@ -53,8 +58,4 @@ public class ArticleController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/articles")
-    public ResponseEntity<List<Map<String,Object>>> getArticles(@RequestParam Long boardId) {
-        return ResponseEntity.ok(articleService.getArticlesByBoard(boardId));
-    }
 }
