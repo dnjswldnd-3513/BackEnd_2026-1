@@ -3,7 +3,6 @@ package com.example.demo.controller;
 
 import com.example.demo.entity.Article;
 import com.example.demo.service.ArticleService;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,18 +36,23 @@ public class ArticleController {
 
     @PostMapping("/articles")
     public ResponseEntity<Article> createArticle(@RequestBody Map<String,Object> body){
-        Long memberId = Long.valueOf(body.get("memberId").toString());
-        Long boardId = Long.valueOf(body.get("boardId").toString());
-        String title = body.get("title").toString();
-        String content = body.get("content").toString();
+        Object memberIdObj = body.get("memberId");
+        Object boardIdObj = body.get("boardId");
+
+        Long memberId = memberIdObj != null ? Long.valueOf(memberIdObj.toString()) : null;
+        Long boardId = boardIdObj != null ? Long.valueOf(boardIdObj.toString()) : null;
+
+        String title = (String) body.get("title");
+        String content = (String) body.get("content");
+
         return ResponseEntity.status(HttpStatus.CREATED)
                 .body(articleService.createArticle(memberId, boardId, title, content));
     }
 
     @PutMapping("/articles/{id}")
     public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody Map<String,Object> body) {
-        String title = body.get("title").toString();
-        String content = body.get("content").toString();
+        String title = (String) body.get("title");
+        String content = (String) body.get("content");
         return ResponseEntity.ok(articleService.updateArticle(id,title,content));
     }
 

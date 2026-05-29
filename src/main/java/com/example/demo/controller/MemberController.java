@@ -22,9 +22,9 @@ public class MemberController {
     public ResponseEntity<Member> update(@PathVariable Long id,@RequestBody Map<String,Object> body){
         return ResponseEntity.ok(memberService.updateMember(
                 id,
-                body.get("name").toString(),
-                body.get("email").toString(),
-                body.get("password").toString()
+                (String) body.get("name"),
+                (String) body.get("email"),
+                (String) body.get("password")
         ));
     }
 
@@ -41,9 +41,9 @@ public class MemberController {
     @PostMapping("/members")
     public ResponseEntity<Member> create(@RequestBody Map<String ,Object> body){
         return ResponseEntity.status(HttpStatus.CREATED).body(memberService.createMember(
-                body.get("name").toString(),
-                body.get("email").toString(),
-                body.get("password").toString()));
+                (String)body.get("name"),
+                (String)body.get("email"),
+                (String)body.get("password")));
     }
 
     @DeleteMapping("/members/{id}")

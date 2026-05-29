@@ -30,12 +30,12 @@ public class BoardController {
 
     @PostMapping("/boards")
     public ResponseEntity<Board> create(@RequestBody Map<String, Object> body) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(boardService.createBoard(body.get("name").toString()));
+        return ResponseEntity.status(HttpStatus.CREATED).body(boardService.createBoard((String) body.get("name")));
     }
 
     @PutMapping("/boards/{id}")
     public ResponseEntity<Board> update(@PathVariable Long id, @RequestBody Map<String, Object> body) {
-        return ResponseEntity.ok(boardService.updateBoard(id, body.get("name").toString()));
+        return ResponseEntity.ok(boardService.updateBoard(id, (String) body.get("name")));
     }
 
     @DeleteMapping("/boards/{id}")
