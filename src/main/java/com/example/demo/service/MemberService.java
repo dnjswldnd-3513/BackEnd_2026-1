@@ -35,7 +35,7 @@ public class MemberService {
     }
 
     public Member updateMember(Long id, String name, String email,String pass){
-        if (memberRepository.checkByEmail(email)) throw new DuplicationEmailException("이미 사용중인 이메일입니다.:"+email);
+        if (memberRepository.checkByEmailAndID(id,email)) throw new DuplicationEmailException("이미 사용중인 이메일입니다.:"+email);
         Member member = memberRepository.findById(id);
         member.update(name,email,pass);
         return member;
