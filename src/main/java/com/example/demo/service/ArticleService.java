@@ -34,7 +34,7 @@ public class ArticleService {
 
     private Map<String,Object> toMap(Article article){
         Map<String,Object> map = new HashMap<>();
-        Member member = memberRepository.findById(article.getMemberID());
+        Member member = memberRepository.findById(article.getMemberId());
         map.put("title",article.getTitle());
         map.put("author",member.getName());
         map.put("date",article.getCreatedAt());

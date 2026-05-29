@@ -14,7 +14,7 @@ import java.util.Map;
 @RestController
 public class ArticleController {
 
-    private ArticleService articleService;
+    private final ArticleService articleService;
 
     public ArticleController(ArticleService articleService) {
         this.articleService = articleService;

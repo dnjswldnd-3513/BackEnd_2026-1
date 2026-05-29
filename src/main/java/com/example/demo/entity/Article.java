@@ -34,7 +34,7 @@ public class Article {
         return id;
     }
 
-    public Long getMemberID() {
+    public Long getMemberId() {
         return memberId;
     }
 
