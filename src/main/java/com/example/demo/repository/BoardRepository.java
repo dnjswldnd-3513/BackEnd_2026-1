@@ -14,6 +14,12 @@ public class BoardRepository {
     private final Map<Long, Board> boards = new HashMap<>();
     private Long nextId = 0L;
 
+    public BoardRepository() {
+        ////
+        save(new Board("test 게시판"));
+        ////
+    }
+
     public Board save(Board board){
         board.crateId(++nextId);
         boards.put(board.getId(),board);
