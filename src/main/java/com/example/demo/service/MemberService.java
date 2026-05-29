@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.Member;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.DuplicationEmailException;
+import com.example.demo.repository.ArticleRepository;
 import com.example.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
@@ -12,9 +13,11 @@ import java.util.List;
 public class MemberService {
 
     private final MemberRepository memberRepository;
+    private final ArticleRepository articleRepository;
 
-    public MemberService(MemberRepository memberRepository) {
+    public MemberService(MemberRepository memberRepository,ArticleRepository articleRepository) {
         this.memberRepository = memberRepository;
+        this.articleRepository =articleRepository;
     }
 
     public List<Member> getMembers(){
@@ -39,6 +42,8 @@ public class MemberService {
     }
 
     public void deleteMember(Long id){
+        memberRepository.findById(id);
+        if (articleRepository.checkByMemberId(id)) throw new BadRequestException("작성한 게시물이 있어서 삭제할수 없습니다.");
         memberRepository.deleteById(id);
     }
 }
