@@ -43,4 +43,14 @@ public class MemberRepository {
         members.remove(id);
     }
 
+    public boolean checkByEmail(String email){
+        return members.values().stream()
+                .anyMatch(f -> f.getEmail().equals(email));
+    }
+
+    public boolean checkByEmailAndID(Long id,String email){
+        return members.values().stream()
+                .anyMatch(f -> f.getEmail().equals(email) && !f.getId().equals(id));
+    }
+
 }
