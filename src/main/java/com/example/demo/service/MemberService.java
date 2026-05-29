@@ -9,7 +9,7 @@ import java.util.List;
 @Service
 public class MemberService {
 
-    public final MemberRepository memberRepository;
+    private final MemberRepository memberRepository;
 
     public MemberService(MemberRepository memberRepository) {
         this.memberRepository = memberRepository;
