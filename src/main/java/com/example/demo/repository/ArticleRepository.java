@@ -51,4 +51,14 @@ public class ArticleRepository {
                 .toList();
     }
 
+    public boolean checkByMemberId(Long memberId){
+        return articles.values().stream()
+                .anyMatch(f -> f.getMemberId().equals(memberId));
+    }
+    
+    public boolean checkByBoardId(Long boardId){
+        return articles.values().stream()
+                .anyMatch(f -> f.getBoardId().equals(boardId));
+    }
+
 }
