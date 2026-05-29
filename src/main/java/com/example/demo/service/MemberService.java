@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Member;
 import com.example.demo.exception.BadRequestException;
+import com.example.demo.exception.DuplicationEmailException;
 import com.example.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
@@ -26,10 +27,12 @@ public class MemberService {
 
     public Member createMember(String name, String email,String pass){
         if (name == null || email == null || pass == null) throw new BadRequestException("name,email,password는 필수입니다.");
+        if (memberRepository.checkByEmail(email)) throw new DuplicationEmailException("이미 사용중인 이메일입니다 :" + email);
         return memberRepository.save(new Member(name,email,pass));
     }
 
     public Member updateMember(Long id, String name, String email,String pass){
+        if (memberRepository.checkByEmail(email)) throw new DuplicationEmailException("이미 사용중인 이메일입니다.:"+email);
         Member member = memberRepository.findById(id);
         member.update(name,email,pass);
         return member;
