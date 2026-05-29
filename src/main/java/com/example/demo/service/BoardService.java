@@ -2,6 +2,7 @@ package com.example.demo.service;
 
 
 import com.example.demo.entity.Board;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.BoardRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class BoardService {
     }
 
     public Board createBoard(String name) {
+        if (name ==null) throw new BadRequestException("name은 필수입니다.");
         return boardRepository.save(new Board(name));
     }
 

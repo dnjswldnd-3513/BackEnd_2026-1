@@ -1,6 +1,7 @@
 package com.example.demo.service;
 
 import com.example.demo.entity.Member;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class MemberService {
     }
 
     public Member createMember(String name, String email,String pass){
+        if (name == null || email == null || pass == null) throw new BadRequestException("name,email,password는 필수입니다.");
         return memberRepository.save(new Member(name,email,pass));
     }
 

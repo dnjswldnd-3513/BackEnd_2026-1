@@ -3,6 +3,7 @@ package com.example.demo.service;
 import com.example.demo.entity.Article;
 import com.example.demo.entity.Board;
 import com.example.demo.entity.Member;
+import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.ArticleRepository;
 import com.example.demo.repository.BoardRepository;
 import com.example.demo.repository.MemberRepository;
@@ -47,6 +48,7 @@ public class ArticleService {
     }
 
     public Article createArticle(Long memberId, Long boardId, String title, String content) {
+        if (memberId == null || boardId == null || title == null || content == null) throw new BadRequestException("memberId,boardId, title,content는 필수입니다.");
         return articleRepository.save(new Article(memberId, boardId, title, content));
     }
 
