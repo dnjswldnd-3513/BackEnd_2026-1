@@ -49,6 +49,8 @@ public class ArticleService {
 
     public Article createArticle(Long memberId, Long boardId, String title, String content) {
         if (memberId == null || boardId == null || title == null || content == null) throw new BadRequestException("memberId,boardId, title,content는 필수입니다.");
+        if (!memberRepository.checkById(memberId)) throw new BadRequestException("존재하지 않는 사용자입니다."+memberId);
+        if (!boardRepository.checkById(boardId)) throw new BadRequestException("존재하지 않는 게시판입니다.."+boardId);
         return articleRepository.save(new Article(memberId, boardId, title, content));
     }
 
