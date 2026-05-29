@@ -11,10 +11,21 @@ import java.util.Map;
 
 @RestController
 public class MemberController {
-    public final MemberService memberService;
+
+    private final MemberService memberService;
 
     public MemberController(MemberService memberService) {
         this.memberService = memberService;
+    }
+
+    @PutMapping("/members/{index}")
+    public ResponseEntity<Member> update(@PathVariable Long id,@RequestBody Map<String,Object> body){
+        return ResponseEntity.ok(memberService.updateMember(
+                id,
+                body.get("name").toString(),
+                body.get("email").toString(),
+                body.get("password").toString()
+        ));
     }
 
     @GetMapping("/members")
