@@ -34,9 +34,9 @@ public class ArticleRepository {
         return article;
     }
 
-    public Article update(Long id,String title,String content){
+    public Article update(Long id, Long memberId, Long boardId, String title, String content) {
         Article article = findById(id);
-        article.update(title,content);
+        article.update(memberId, boardId, title, content);
         return article;
     }
 
@@ -55,7 +55,7 @@ public class ArticleRepository {
         return articles.values().stream()
                 .anyMatch(f -> f.getMemberId().equals(memberId));
     }
-    
+
     public boolean checkByBoardId(Long boardId){
         return articles.values().stream()
                 .anyMatch(f -> f.getBoardId().equals(boardId));

@@ -50,10 +50,16 @@ public class ArticleController {
     }
 
     @PutMapping("/articles/{id}")
-    public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody Map<String,Object> body) {
+    public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody Map<String, Object> body) {
+        Object memberIdObj = body.get("memberId");
+        Object boardIdObj = body.get("boardId");
+
+        Long memberId = memberIdObj != null ? Long.valueOf(memberIdObj.toString()) : null;
+        Long boardId = boardIdObj != null ? Long.valueOf(boardIdObj.toString()) : null;
+
         String title = (String) body.get("title");
         String content = (String) body.get("content");
-        return ResponseEntity.ok(articleService.updateArticle(id,title,content));
+        return ResponseEntity.ok(articleService.updateArticle(id, memberId, boardId, title, content));
     }
 
     @DeleteMapping("/articles/{id}")

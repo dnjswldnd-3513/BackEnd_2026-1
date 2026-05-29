@@ -24,9 +24,11 @@ public class Article {
         this.id = id;
     }
 
-    public void update(String title,String content){
-        this.content = content;
+    public void update(Long memberId, Long boardId, String title, String content) {
+        this.memberId = memberId;
+        this.boardId = boardId;
         this.title = title;
+        this.content = content;
         this.updatedAt = LocalDateTime.now();
     }
 
