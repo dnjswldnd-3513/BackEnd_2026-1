@@ -3,6 +3,7 @@ package com.example.demo.repository;
 import com.example.demo.entity.Article;
 import com.example.demo.entity.Board;
 import com.example.demo.entity.Member;
+import com.example.demo.exception.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.time.LocalDateTime;
@@ -23,7 +24,7 @@ public class ArticleRepository {
 
     public Article findById(Long id){
         Article article = articles.get(id);
-        if (article == null) throw new IllegalArgumentException("존재하지 않는 article id: " + id);
+        if (article == null) throw new EntityNotFoundException("존재하지 않는 article id: " + id);
         return article;
     }
 
@@ -40,7 +41,7 @@ public class ArticleRepository {
     }
 
     public void delete(Long id){
-        if (!articles.containsKey(id)) throw new IllegalArgumentException("존재하지 않는 article id:" +id);
+        if (!articles.containsKey(id)) throw new EntityNotFoundException("존재하지 않는 article id:" +id);
         articles.remove(id);
     }
 

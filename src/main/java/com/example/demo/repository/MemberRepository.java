@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Member;
+import com.example.demo.exception.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -29,7 +30,7 @@ public class MemberRepository {
     public Member findById(Long id){
         Member member = members.get(id);
         if(member == null){
-            throw new IllegalArgumentException("존재하지 않는 member id " + id);
+            throw new EntityNotFoundException("존재하지 않는 member id " + id);
         }
         return member;
     }

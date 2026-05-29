@@ -1,6 +1,7 @@
 package com.example.demo.repository;
 
 import com.example.demo.entity.Board;
+import com.example.demo.exception.EntityNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ public class BoardRepository {
 
     public Board findById(Long id){
         Board board = boards.get(id);
-        if (board == null) throw new IllegalArgumentException("존재하지 않는 board id: " + id);
+        if (board == null) throw new EntityNotFoundException("존재하지 않는 board id: " + id);
         return board;
     }
 
