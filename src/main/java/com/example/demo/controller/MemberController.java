@@ -18,7 +18,7 @@ public class MemberController {
         this.memberService = memberService;
     }
 
-    @PutMapping("/members/{index}")
+    @PutMapping("/members/{id}")
     public ResponseEntity<Member> update(@PathVariable Long id,@RequestBody Map<String,Object> body){
         return ResponseEntity.ok(memberService.updateMember(
                 id,
