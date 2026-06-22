@@ -16,6 +16,8 @@ public class ArticleDao {
 
     public Article save(Article article) {
         entityManager.persist(article);
+        entityManager.flush();
+        entityManager.refresh(article);
         return article;
     }
 
