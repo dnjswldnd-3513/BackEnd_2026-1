@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/bcsd?serverTimezone=Asia/Seoul
+    username: root
+    password: wldnd3513
+    driver-class-name: com.mysql.cj.jdbc.Driver
