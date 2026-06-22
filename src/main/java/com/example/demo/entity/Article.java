@@ -19,9 +19,9 @@ public class Article {
     private String title;
     @Column(nullable = false)
     private String content;
-    @Column(name = "creeated_date", nullable = false)
+    @Column(name = "created_date", insertable = false, updatable = false)
     private LocalDateTime createdDate;
-    @Column(name = "modified_date", nullable = false)
+    @Column(name = "modified_date", insertable = false, updatable = false)
     private LocalDateTime modifiedDate;
 
     public Article() {
