@@ -1,4 +1,4 @@
 package com.example.demo.dto.response;
 
-public class MemberResponse {
+public record MemberResponse (Long id, String name, String email){
 }
