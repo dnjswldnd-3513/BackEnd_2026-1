@@ -75,7 +75,6 @@ public class ArticleService {
 
         Article article = articleDao.findById(id);
         article.update(request.authorId(), request.boardId(), request.title(), request.content());
-        articleDao.update(article);
         return toResponse(articleDao.findById(article.getId()));
     }
 

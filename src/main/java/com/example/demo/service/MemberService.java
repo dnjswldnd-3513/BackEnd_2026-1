@@ -49,11 +49,10 @@ public class MemberService {
 
     @Transactional
     public MemberResponse updateMember(Long id, MemberUpdateRequest request) {
-        if (memberDao.checkByEmailAndIdNot(id, request.email()))
+        if (memberDao.checkByEmailAndNot(id, request.email()))
             throw new DuplicationEmailException("이미 사용 중인 이메일입니다: " + request.email());
         Member member = memberDao.findById(id);
         member.update(request.name(), request.email(), request.password());
-        memberDao.update(member);
         return new MemberResponse(member.getId(), member.getName(), member.getEmail());
     }
 

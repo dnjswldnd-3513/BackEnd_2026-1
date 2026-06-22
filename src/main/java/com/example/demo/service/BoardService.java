@@ -48,7 +48,6 @@ public class BoardService {
     public BoardResponse updateBoard(Long id, BoardUpdateRequest request) {
         Board board = boardDao.findById(id);
         board.update(request.name());
-        boardDao.update(board);
         return new BoardResponse(board.getId(), board.getName());
     }
 
