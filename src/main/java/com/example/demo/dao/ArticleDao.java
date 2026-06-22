@@ -2,10 +2,8 @@ package com.example.demo.dao;
 
 import com.example.demo.entity.Article;
 import com.example.demo.exception.EntityNotFoundException;
-import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.RowMapper;
-import org.springframework.jdbc.support.GeneratedKeyHolder;
-import org.springframework.jdbc.support.KeyHolder;
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -13,76 +11,51 @@ import java.util.List;
 @Repository
 public class ArticleDao {
 
-    private final JdbcTemplate jdbcTemplate;
-
-    public ArticleDao(JdbcTemplate jdbcTemplate) {
-        this.jdbcTemplate = jdbcTemplate;
-    }
+    @PersistenceContext
+    private EntityManager entityManager;
 
     public Article save(Article article) {
-        KeyHolder keyHolder = new GeneratedKeyHolder();
-        jdbcTemplate.update(c -> {
-            var ps = c.prepareStatement(
-                    "INSERT INTO article (author_id, board_id, title, content) VALUES (?, ?, ?, ?)",
-                    new String[]{"id"});
-            ps.setLong(1, article.getAuthorId());
-            ps.setLong(2, article.getBoardId());
-            ps.setString(3, article.getTitle());
-            ps.setString(4, article.getContent());
-            return ps;
-        }, keyHolder);
-        article.setId(keyHolder.getKey().longValue());
+        entityManager.persist(article);
         return article;
     }
 
     public Article findById(Long id) {
-        List<Article> results = jdbcTemplate.query(
-                "SELECT * FROM article WHERE id = ?", articleRowMapper(), id);
-        if (results.isEmpty())
+        Article article = entityManager.find(Article.class, id);
+        if (article == null)
             throw new EntityNotFoundException("존재하지 않는 article id: " + id);
-        return results.get(0);
+        return article;
     }
 
     public List<Article> findAll() {
-        return jdbcTemplate.query("SELECT * FROM article", articleRowMapper());
+        return entityManager.createQuery("SELECT a FROM Article a", Article.class)
+                .getResultList();
     }
 
     public List<Article> findByBoardId(Long boardId) {
-        return jdbcTemplate.query(
-                "SELECT * FROM article WHERE board_id = ?", articleRowMapper(), boardId);
-    }
-
-    public void update(Article article) {
-        jdbcTemplate.update(
-                "UPDATE article SET author_id = ?, board_id = ?, title = ?, content = ? WHERE id = ?",
-                article.getAuthorId(), article.getBoardId(),
-                article.getTitle(), article.getContent(), article.getId());
+        return entityManager.createQuery(
+                        "SELECT a FROM Article a WHERE a.boardId = :boardId", Article.class)
+                .setParameter("boardId", boardId)
+                .getResultList();
     }
 
     public void deleteById(Long id) {
-        jdbcTemplate.update("DELETE FROM article WHERE id = ?", id);
+        Article article = findById(id);
+        entityManager.remove(article);
     }
 
     public boolean existsByAuthorId(Long authorId) {
-        Integer count = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM article WHERE author_id = ?", Integer.class, authorId);
-        return count != null && count > 0;
+        Long count = entityManager.createQuery(
+                        "SELECT COUNT(a) FROM Article a WHERE a.authorId = :authorId", Long.class)
+                .setParameter("authorId", authorId)
+                .getSingleResult();
+        return count > 0;
     }
 
     public boolean existsByBoardId(Long boardId) {
-        Integer count = jdbcTemplate.queryForObject(
-                "SELECT COUNT(*) FROM article WHERE board_id = ?", Integer.class, boardId);
-        return count != null && count > 0;
-    }
-
-    private RowMapper<Article> articleRowMapper() {
-        return (rs, rowNum) -> new Article(
-                rs.getLong("id"),
-                rs.getLong("author_id"),
-                rs.getLong("board_id"),
-                rs.getString("title"),
-                rs.getString("content"),
-                rs.getTimestamp("created_date").toLocalDateTime(),
-                rs.getTimestamp("modified_date").toLocalDateTime());
+        Long count = entityManager.createQuery(
+                        "SELECT COUNT(a) FROM Article a WHERE a.boardId = :boardId", Long.class)
+                .setParameter("boardId", boardId)
+                .getSingleResult();
+        return count > 0;
     }
 }
