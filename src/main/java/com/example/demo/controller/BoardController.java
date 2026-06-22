@@ -1,13 +1,14 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Board;
+import com.example.demo.dto.request.BoardCreateRequest;
+import com.example.demo.dto.request.BoardUpdateRequest;
+import com.example.demo.dto.response.BoardResponse;
 import com.example.demo.service.BoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 public class BoardController {
@@ -19,23 +20,23 @@ public class BoardController {
     }
 
     @GetMapping("/boards")
-    public ResponseEntity<List<Board>> getBoards() {
+    public ResponseEntity<List<BoardResponse>> getBoards() {
         return ResponseEntity.ok(boardService.getBoards());
     }
 
     @GetMapping("/boards/{id}")
-    public ResponseEntity<Board> getBoard(@PathVariable Long id) {
+    public ResponseEntity<BoardResponse> getBoard(@PathVariable Long id) {
         return ResponseEntity.ok(boardService.getBoard(id));
     }
 
     @PostMapping("/boards")
-    public ResponseEntity<Board> create(@RequestBody Map<String, Object> body) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(boardService.createBoard((String) body.get("name")));
+    public ResponseEntity<BoardResponse> create(@RequestBody BoardCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(boardService.createBoard(request));
     }
 
     @PutMapping("/boards/{id}")
-    public ResponseEntity<Board> update(@PathVariable Long id, @RequestBody Map<String, Object> body) {
-        return ResponseEntity.ok(boardService.updateBoard(id, (String) body.get("name")));
+    public ResponseEntity<BoardResponse> update(@PathVariable Long id, @RequestBody BoardUpdateRequest request) {
+        return ResponseEntity.ok(boardService.updateBoard(id, request));
     }
 
     @DeleteMapping("/boards/{id}")
