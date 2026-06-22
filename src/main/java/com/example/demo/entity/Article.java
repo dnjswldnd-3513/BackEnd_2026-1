@@ -1,32 +1,37 @@
 package com.example.demo.entity;
 
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 
+@Entity
+@Table(name = "article")
 public class Article {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(name = "author_id", nullable = false)
     private Long authorId;
+    @Column(name = "board_id", nullable = false)
     private Long boardId;
+    @Column(nullable = false)
     private String title;
+    @Column(nullable = false)
     private String content;
+    @Column(name = "creeated_date", nullable = false)
     private LocalDateTime createdDate;
+    @Column(name = "modified_date", nullable = false)
     private LocalDateTime modifiedDate;
+
+    public Article() {
+    }
 
     public Article(Long authorId, Long boardId, String title, String content) {
         this.authorId = authorId;
         this.boardId = boardId;
         this.title = title;
         this.content = content;
-    }
-
-    public Article(Long id, Long authorId, Long boardId, String title, String content,
-                   LocalDateTime createdDate, LocalDateTime modifiedDate) {
-        this.id = id;
-        this.authorId = authorId;
-        this.boardId = boardId;
-        this.title = title;
-        this.content = content;
-        this.createdDate = createdDate;
-        this.modifiedDate = modifiedDate;
     }
 
     public void update(Long authorId, Long boardId, String title, String content) {
