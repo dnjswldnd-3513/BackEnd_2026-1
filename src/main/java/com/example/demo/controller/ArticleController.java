@@ -1,14 +1,14 @@
 package com.example.demo.controller;
 
-
-import com.example.demo.entity.Article;
+import com.example.demo.dto.request.ArticleCreateRequest;
+import com.example.demo.dto.request.ArticleUpdateRequest;
+import com.example.demo.dto.response.ArticleResponse;
 import com.example.demo.service.ArticleService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
 
 @RestController
 public class ArticleController {
@@ -20,7 +20,7 @@ public class ArticleController {
     }
 
     @GetMapping("/articles")
-    public ResponseEntity<List<Map<String, Object>>> getArticles(
+    public ResponseEntity<List<ArticleResponse>> getArticles(
             @RequestParam(required = false) Long boardId) {
         if (boardId != null) {
             return ResponseEntity.ok(articleService.getArticlesByBoard(boardId));
@@ -29,34 +29,23 @@ public class ArticleController {
     }
 
     @GetMapping("/articles/{id}")
-    public ResponseEntity<Map<String, Object>> getArticle(@PathVariable Long id){
+    public ResponseEntity<ArticleResponse> getArticle(@PathVariable Long id) {
         return ResponseEntity.ok(articleService.getArticle(id));
     }
 
-    private Long toLong(Object obj) {
-        return obj != null ? Long.valueOf(obj.toString()) : null;
-    }
-
     @PostMapping("/articles")
-    public ResponseEntity<Article> createArticle(@RequestBody Map<String,Object> body){
-        String title = (String) body.get("title");
-        String content = (String) body.get("content");
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(articleService.createArticle(toLong(body.get("memberId")), toLong(body.get("boardId")), title, content));
+    public ResponseEntity<ArticleResponse> createArticle(@RequestBody ArticleCreateRequest request) {
+        return ResponseEntity.status(HttpStatus.CREATED).body(articleService.createArticle(request));
     }
 
     @PutMapping("/articles/{id}")
-    public ResponseEntity<Article> updateArticle(@PathVariable Long id, @RequestBody Map<String, Object> body) {
-        String title = (String) body.get("title");
-        String content = (String) body.get("content");
-        return ResponseEntity.ok(articleService.updateArticle(id, toLong(body.get("memberId")), toLong(body.get("boardId")), title, content));
+    public ResponseEntity<ArticleResponse> updateArticle(@PathVariable Long id, @RequestBody ArticleUpdateRequest request) {
+        return ResponseEntity.ok(articleService.updateArticle(id, request));
     }
 
     @DeleteMapping("/articles/{id}")
-    public ResponseEntity<?> deleteArticle(@PathVariable Long id){
+    public ResponseEntity<Void> deleteArticle(@PathVariable Long id) {
         articleService.deleteArticle(id);
         return ResponseEntity.noContent().build();
     }
-
 }
