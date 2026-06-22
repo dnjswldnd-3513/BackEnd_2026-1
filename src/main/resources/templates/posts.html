@@ -1,19 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-  <title>게시판</title>
+  <title>Board Posts</title>
 </head>
 <body>
-<h1 th:text="${boardName}"></h1>
-
-<div th:each="article : ${articles}">
-  <h3 th:text="${article.title}"></h3>
-  <p>
-    <span th:text="${article.author}"></span> |
-    <span th:text="${article.date}"></span>
-  </p>
-  <p th:text="${article.content}"></p>
-  <hr/>
-</div>
+<h1 th:text="'Board: ' + ${boardName}"></h1>
+<ul>
+  <li th:each="article : ${articles}">
+    <a th:href="'/articles/' + ${article.id}" th:text="${article.title}"></a>
+  </li>
+</ul>
 </body>
 </html>
