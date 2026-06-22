@@ -13,11 +13,14 @@ public class Member {
         this.password = password;
     }
 
-    public void createId(Long id){
+    public Member(Long id, String name, String email, String password) {
         this.id = id;
+        this.name = name;
+        this.email = email;
+        this.password = password;
     }
 
-    public void update(String name,String email,String password){
+    public void update(String name, String email, String password) {
         this.name = name;
         this.email = email;
         this.password = password;
@@ -25,6 +28,10 @@ public class Member {
 
     public Long getId() {
         return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {

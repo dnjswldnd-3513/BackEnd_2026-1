@@ -3,41 +3,49 @@ package com.example.demo.entity;
 import java.time.LocalDateTime;
 
 public class Article {
-
     private Long id;
-    private Long memberId;
+    private Long authorId;
     private Long boardId;
     private String title;
     private String content;
-    private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
+    private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;
 
-    public Article(Long memberId, Long boardId, String title, String content) {
-        this.memberId = memberId;
+    public Article(Long authorId, Long boardId, String title, String content) {
+        this.authorId = authorId;
         this.boardId = boardId;
         this.title = title;
         this.content = content;
-        this.createdAt = LocalDateTime.now();
     }
 
-    public void setId(Long id) {
+    public Article(Long id, Long authorId, Long boardId, String title, String content,
+                   LocalDateTime createdDate, LocalDateTime modifiedDate) {
         this.id = id;
-    }
-
-    public void update(Long memberId, Long boardId, String title, String content) {
-        this.memberId = memberId;
+        this.authorId = authorId;
         this.boardId = boardId;
         this.title = title;
         this.content = content;
-        this.updatedAt = LocalDateTime.now();
+        this.createdDate = createdDate;
+        this.modifiedDate = modifiedDate;
+    }
+
+    public void update(Long authorId, Long boardId, String title, String content) {
+        this.authorId = authorId;
+        this.boardId = boardId;
+        this.title = title;
+        this.content = content;
     }
 
     public Long getId() {
         return id;
     }
 
-    public Long getMemberId() {
-        return memberId;
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getAuthorId() {
+        return authorId;
     }
 
     public Long getBoardId() {
@@ -52,11 +60,11 @@ public class Article {
         return content;
     }
 
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
+    public LocalDateTime getCreatedDate() {
+        return createdDate;
     }
 
-    public LocalDateTime getUpdatedAt() {
-        return updatedAt;
+    public LocalDateTime getModifiedDate() {
+        return modifiedDate;
     }
 }
