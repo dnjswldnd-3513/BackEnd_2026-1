@@ -8,9 +8,6 @@ import com.example.demo.dto.request.BoardUpdateRequest;
 import com.example.demo.dto.response.BoardResponse;
 import com.example.demo.entity.Board;
 import com.example.demo.exception.BadRequestException;
-import com.example.demo.repository.ArticleRepository;
-import com.example.demo.repository.BoardRepository;
-import com.example.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
