@@ -52,7 +52,7 @@ public class MemberDao {
         return count > 0;
     }
     public boolean existsById(Long id) {
-        Long count = entityManager.createQuery("SLELCT COUNT(m) FROM Member m WHERE m.id = :id",Long.class)
+        Long count = entityManager.createQuery("SELECT COUNT(m) FROM Member m WHERE m.id = :id",Long.class)
                 .setParameter("id", id)
                 .getSingleResult();
         return count > 0;
