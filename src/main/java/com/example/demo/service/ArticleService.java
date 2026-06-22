@@ -1,5 +1,11 @@
 package com.example.demo.service;
 
+import com.example.demo.dao.ArticleDao;
+import com.example.demo.dao.BoardDao;
+import com.example.demo.dao.MemberDao;
+import com.example.demo.dto.request.ArticleCreateRequest;
+import com.example.demo.dto.request.ArticleUpdateRequest;
+import com.example.demo.dto.response.ArticleResponse;
 import com.example.demo.entity.Article;
 import com.example.demo.entity.Board;
 import com.example.demo.entity.Member;
@@ -8,6 +14,7 @@ import com.example.demo.repository.ArticleRepository;
 import com.example.demo.repository.BoardRepository;
 import com.example.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 
 import java.util.ArrayList;
@@ -19,69 +26,74 @@ import java.util.stream.Collectors;
 @Service
 public class ArticleService {
 
-    private final ArticleRepository articleRepository;
-    private final MemberRepository memberRepository;
-    private final BoardRepository boardRepository;
 
-    public ArticleService(ArticleRepository articleRepository, MemberRepository memberRepository, BoardRepository boardRepository) {
-        this.articleRepository = articleRepository;
-        this.memberRepository = memberRepository;
-        this.boardRepository = boardRepository;
+    private final ArticleDao articleDao;
+    private final MemberDao memberDao;
+    private final BoardDao boardDao;
+
+    public ArticleService(ArticleDao articleDao, MemberDao memberDao, BoardDao boardDao) {
+        this.articleDao = articleDao;
+        this.memberDao = memberDao;
+        this.boardDao = boardDao;
     }
 
-    public List<Map<String,Object>> getArticles(){
-        return articleRepository.findAll().stream().map(this::toMap).collect(Collectors.toList());
+    @Transactional(readOnly = true)
+    public List<ArticleResponse> getArticles() {
+        return articleDao.findAll().stream()
+                .map(this::toResponse)
+                .toList();
     }
 
-    private Map<String,Object> toMap(Article article){
-        Map<String,Object> map = new HashMap<>();
-        Member member = memberRepository.findById(article.getMemberId());
-        map.put("title",article.getTitle());
-        map.put("author",member.getName());
-        map.put("date",article.getCreatedAt());
-        map.put("content",article.getContent());
-        return map;
+    private ArticleResponse toResponse(Article article) {
+        return new ArticleResponse(article.getId(), article.getAuthorId(), article.getBoardId(), article.getTitle(), article.getContent(), article.getCreatedDate(), article.getModifiedDate());
     }
 
-    public Map<String,Object> getArticle(Long id){
-        return toMap(articleRepository.findById(id));
+    @Transactional(readOnly = true)
+    public ArticleResponse getArticle(Long id) {
+        return toResponse(articleDao.findById(id));
     }
 
-    public Article createArticle(Long memberId, Long boardId, String title, String content) {
-        if (memberId == null || boardId == null || title == null || content == null) throw new BadRequestException("memberId,boardId, title,content는 필수입니다.");
-        if (!memberRepository.checkById(memberId)) throw new BadRequestException("존재하지 않는 사용자입니다."+memberId);
-        if (!boardRepository.checkById(boardId)) throw new BadRequestException("존재하지 않는 게시판입니다.."+boardId);
-        return articleRepository.save(new Article(memberId, boardId, title, content));
+
+    @Transactional
+    public ArticleResponse createArticle(ArticleCreateRequest request) {
+        if (request.authorId() == null || request.boardId() == null || request.title() == null || request.content() == null)
+            throw new BadRequestException("memberId,boardId, title,content는 필수입니다.");
+        if (!memberDao.existsById(request.authorId()))
+            throw new BadRequestException("존재하지 않는 사용자입니다." + request.authorId());
+        if (!boardDao.existsById(request.boardId()))
+            throw new BadRequestException("존재하지 않는 게시판입니다.." + request.boardId());
+
+        Article article = articleDao.save(new Article(request.authorId(), request.boardId(), request.title(), request.content()));
+        return toResponse(articleDao.findById(article.getId()));
     }
 
-    public Article updateArticle(Long id, Long memberId, Long boardId, String title, String content) {
-        if (memberId == null || boardId == null || title == null || content == null) {
+    @Transactional
+    public ArticleResponse updateArticle(Long id, ArticleUpdateRequest request) {
+        if (request.authorId() == null || request.boardId() == null || request.title() == null || request.content() == null)
             throw new BadRequestException("memberId, boardId, title, content는 필수입니다.");
-        }
-        if (!memberRepository.checkById(memberId)) {
-            throw new BadRequestException("존재하지 않는 사용자입니다: " + memberId);
-        }
-        if (!boardRepository.checkById(boardId)) {
-            throw new BadRequestException("존재하지 않는 게시판입니다: " + boardId);
-        }
-        return articleRepository.update(id, memberId, boardId, title, content);
+        if (!memberDao.existsById(request.authorId()))
+            throw new BadRequestException("존재하지 않는 사용자입니다: " + request.authorId());
+        if (!boardDao.existsById(request.boardId()))
+            throw new BadRequestException("존재하지 않는 게시판입니다: " + request.boardId());
+
+        Article article = articleDao.findById(id);
+        article.update(request.authorId(), request.boardId(), request.title(), request.content());
+        articleDao.update(article);
+        return toResponse(articleDao.findById(article.getId()));
     }
 
+    @Transactional
     public void deleteArticle(Long id) {
-        articleRepository.delete(id);
+        articleDao.findById(id);
+        articleDao.deleteById(id);
     }
 
-    public void setPostsModel(Model model){
-        Board board = boardRepository.findById(1L);
-        model.addAttribute("boardName",board.getName());
-        model.addAttribute("articles",getArticles());
-    }
+    @Transactional(readOnly = true)
+    public List<ArticleResponse> getArticlesByBoard(Long boardId) {
+        return articleDao.findByBoardId(boardId).stream()
+                .map(this::toResponse)
+                .toList();
 
-    public List<Map<String,Object>> getArticlesByBoard(Long boardId) {
-        return articleRepository.findByBoardId(boardId)
-                .stream()
-                .map(this::toMap)
-                .collect(Collectors.toList());
     }
 
 }

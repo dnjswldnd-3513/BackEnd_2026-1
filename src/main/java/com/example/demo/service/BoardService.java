@@ -1,46 +1,64 @@
 package com.example.demo.service;
 
 
+import com.example.demo.dao.ArticleDao;
+import com.example.demo.dao.BoardDao;
+import com.example.demo.dto.request.BoardCreateRequest;
+import com.example.demo.dto.request.BoardUpdateRequest;
+import com.example.demo.dto.response.BoardResponse;
 import com.example.demo.entity.Board;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.repository.ArticleRepository;
 import com.example.demo.repository.BoardRepository;
+import com.example.demo.repository.MemberRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 @Service
 public class BoardService {
-    private final BoardRepository boardRepository;
-    private final ArticleRepository articleRepository;
 
-    public BoardService(BoardRepository boardRepository, ArticleRepository articleRepository) {
-        this.boardRepository = boardRepository;
-        this.articleRepository = articleRepository;
+    private final BoardDao boardDao;
+    private final ArticleDao articleDao;
+
+    public BoardService(BoardDao boardDao, ArticleDao articleDao) {
+        this.boardDao = boardDao;
+        this.articleDao = articleDao;
     }
 
-    public List<Board> getBoards() {
-        return boardRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<BoardResponse> getBoards() {
+        return boardDao.findAll().stream()
+                .map(m -> new BoardResponse(m.getId(), m.getName()))
+                .toList();
     }
 
-    public Board getBoard(Long id) {
-        return boardRepository.findById(id);
+    @Transactional(readOnly = true)
+    public BoardResponse getBoard(Long id) {
+        Board board = boardDao.findById(id);
+        return new BoardResponse(board.getId(), board.getName());
     }
 
-    public Board createBoard(String name) {
-        if (name ==null) throw new BadRequestException("name은 필수입니다.");
-        return boardRepository.save(new Board(name));
+    @Transactional
+    public BoardResponse createBoard(BoardCreateRequest request) {
+        if (request.name() == null) throw new BadRequestException("name은 필수입니다.");
+        Board board = boardDao.save(new Board(request.name()));
+        return new BoardResponse(board.getId(), board.getName());
     }
 
-    public Board updateBoard(Long id, String name) {
-        Board board = boardRepository.findById(id);
-        board.update(name);
-        return board;
+    @Transactional
+    public BoardResponse updateBoard(Long id, BoardUpdateRequest request) {
+        Board board = boardDao.findById(id);
+        board.update(request.name());
+        boardDao.update(board);
+        return new BoardResponse(board.getId(), board.getName());
     }
 
+    @Transactional
     public void deleteBoard(Long id) {
-        boardRepository.findById(id);
-        if (articleRepository.checkByBoardId(id)) throw new BadRequestException("작성된 게시물이 있어 게시판을 삭제할수 없습니다.");
-        boardRepository.deleteById(id);
+        boardDao.findById(id);
+        if (articleDao.existsByBoardId(id)) throw new BadRequestException("작성된 게시물이 있어 삭제할 수 없습니다.");
+        boardDao.deleteById(id);
     }
 }
