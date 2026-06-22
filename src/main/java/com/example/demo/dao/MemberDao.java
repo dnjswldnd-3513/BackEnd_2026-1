@@ -38,7 +38,6 @@ public class MemberDao {
         Long count = entityManager.createQuery(
                         "SELECT COUNT(m) FROM Member m WHERE m.email = :email", Long.class)
                 .setParameter("email", email)
-                .setParameter("email", email)
                 .getSingleResult();
         return count > 0;
     }
