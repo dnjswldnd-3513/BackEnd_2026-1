@@ -2,6 +2,9 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "member")
 public class Member {
@@ -15,6 +18,10 @@ public class Member {
     private String email;
     @Column(nullable = false)
     private String password;
+
+
+    @OneToMany(mappedBy = "member") //여기는 cascade가 없는 이유가 회원 삭제해도 글 자동 삭제가 안되기 떄문임
+    private List<Article> articles = new ArrayList<>() ;
 
     public Member() {
     }
@@ -49,5 +56,9 @@ public class Member {
 
     public String getPassword() {
         return password;
+    }
+
+    public List<Article> getArticles() {
+        return articles;
     }
 }
