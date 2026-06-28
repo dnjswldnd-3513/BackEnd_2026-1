@@ -11,14 +11,20 @@ public class Article {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ManyToOne(fetch =  FetchType.LAZY) // 여러 글이 한 회원에 속할때(글:회원 ----> N:1) 일때 쓴다
     @Column(name = "author_id", nullable = false)
-    private Long authorId;
+    private Member member;
+
     @Column(name = "board_id", nullable = false)
-    private Long boardId;
+    @ManyToOne(fetch = FetchType.LAZY)
+    private Board board;
+
     @Column(nullable = false)
     private String title;
+
     @Column(nullable = false)
     private String content;
+
     @Column(name = "created_date", insertable = false, updatable = false)
     private LocalDateTime createdDate;
     @Column(name = "modified_date", insertable = false, updatable = false)
@@ -27,16 +33,16 @@ public class Article {
     public Article() {
     }
 
-    public Article(Long authorId, Long boardId, String title, String content) {
-        this.authorId = authorId;
-        this.boardId = boardId;
+    public Article(Member member, Board board, String title, String content) {
+        this.member = member;
+        this.board = board;
         this.title = title;
         this.content = content;
     }
 
-    public void update(Long authorId, Long boardId, String title, String content) {
-        this.authorId = authorId;
-        this.boardId = boardId;
+    public void update(Member member, Board board, String title, String content) {
+        this.member = member;
+        this.board = board;
         this.title = title;
         this.content = content;
     }
@@ -49,12 +55,12 @@ public class Article {
         this.id = id;
     }
 
-    public Long getAuthorId() {
-        return authorId;
+    public Member getMember() {
+        return member;
     }
 
-    public Long getBoardId() {
-        return boardId;
+    public Board getBoard() {
+        return board;
     }
 
     public String getTitle() {
@@ -73,3 +79,4 @@ public class Article {
         return modifiedDate;
     }
 }
+//현재 할거는 해당 객체에는 1 이런식으로 숫자 형태로  어디 게시판인지를 확인하는 방식인데 이걸 숫자가 아닌 객체로 알기 위해서 바꾼다.
