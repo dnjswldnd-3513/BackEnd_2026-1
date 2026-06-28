@@ -3,8 +3,6 @@ package com.example.demo.service;
 import com.example.demo.entity.Member;
 import com.example.demo.exception.BadRequestException;
 import com.example.demo.exception.DuplicationEmailException;
-import com.example.demo.dao.ArticleDao;
-import com.example.demo.dao.MemberDao;
 import com.example.demo.dto.request.MemberCreateRequest;
 import com.example.demo.dto.request.MemberUpdateRequest;
 import com.example.demo.dto.response.MemberResponse;
