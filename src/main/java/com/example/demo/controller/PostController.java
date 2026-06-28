@@ -1,9 +1,9 @@
 package com.example.demo.controller;
 
-import com.example.demo.dao.ArticleDao;
-import com.example.demo.dao.BoardDao;
 import com.example.demo.entity.Article;
 import com.example.demo.entity.Board;
+import com.example.demo.exception.EntityNotFoundException;
+import com.example.demo.repository.BoardRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,20 +14,18 @@ import java.util.List;
 @Controller
 public class PostController {
 
-    private final ArticleDao articleDao;
-    private final BoardDao boardDao;
+    private final BoardRepository boardRepository;
 
-    public PostController(ArticleDao articleDao, BoardDao boardDao) {
-        this.articleDao = articleDao;
-        this.boardDao = boardDao;
+    public PostController(BoardRepository boardRepository) {
+        this.boardRepository = boardRepository;
     }
 
     @GetMapping("/posts")
     public String getPosts(@RequestParam Long boardId, Model model) {
-        Board board = boardDao.findById(boardId);
-        List<Article> articles = articleDao.findByBoardId(boardId);
+        Board board = boardRepository.findById(boardId)
+                .orElseThrow(() -> new EntityNotFoundException("존재하지 않는 board id: "+ boardId));
         model.addAttribute("boardName", board.getName());
-        model.addAttribute("articles", articles);
+        model.addAttribute("articles", board.getArticles());
         return "posts";
     }
 }
