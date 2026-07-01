@@ -12,10 +12,10 @@ public class Article {
     private Long id;
 
     @ManyToOne(fetch =  FetchType.LAZY) // 여러 글이 한 회원에 속할때(글:회원 ----> N:1) 일때 쓴다
-    @Column(name = "author_id", nullable = false)
+    @JoinColumn(name = "author_id", nullable = false)
     private Member member;
 
-    @Column(name = "board_id", nullable = false)
+    @JoinColumn(name = "board_id", nullable = false)
     @ManyToOne(fetch = FetchType.LAZY)
     private Board board;
 
