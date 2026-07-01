@@ -27,7 +27,7 @@ public class JwtUtil {
                 .compact();
     }
 
-    private SecretKey getKey() { // 객체는 secret문자열인데 이걸 hmac-sha256 키 객체로 변환해서 라이브러리의 요구에 맞게 
+    private SecretKey getKey() { // 객체는 secret문자열인데 이걸 hmac-sha256 키 객체로 변환해서 라이브러리의 요구에 맞게
         return Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
     }
 }
