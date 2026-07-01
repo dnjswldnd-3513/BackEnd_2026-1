@@ -11,3 +11,7 @@ jpa:
   properties:
     hibernate:
       format_sql: true
+
+jwt:
+  secret: dnjswldnd-3513-bcsd-test-jwt-1234
+  expiration: 86400000
